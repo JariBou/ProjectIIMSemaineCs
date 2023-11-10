@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 // Cartoon FX  - (c) 2015 Jean Moreno
 
@@ -12,8 +11,8 @@ public class CFX_AutoRotate : MonoBehaviour
 	
 	// Rotation space
 	public Space space = Space.Self;
-	
-	void Update()
+
+	private void Update()
 	{
 		this.transform.Rotate(rotation * Time.deltaTime, space);
 	}

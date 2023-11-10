@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 // Cartoon FX  - (c) 2015 Jean Moreno
 
@@ -25,20 +24,20 @@ public class CFX_LightIntensityFade : MonoBehaviour
 	
 	private float p_lifetime = 0.0f;
 	private float p_delay;
-	
-	void Start()
+
+	private void Start()
 	{
 		baseIntensity = GetComponent<Light>().intensity;
 	}
-	
-	void OnEnable()
+
+	private void OnEnable()
 	{
 		p_lifetime = 0.0f;
 		p_delay = delay;
 		if(delay > 0) GetComponent<Light>().enabled = false;
 	}
-	
-	void Update ()
+
+	private void Update ()
 	{
 		if(p_delay > 0)
 		{
