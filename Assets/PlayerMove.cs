@@ -17,7 +17,6 @@ public class PlayerMove : MonoBehaviour
     public static event Action OnStopMove;
     public static event Action OnAttack;
     public static event Action OnStopAttack;
-    public static event Action<int> OnHealthUpdate;
 
     // Event pour les GD
     [SerializeField] private UnityEvent _onEvent;

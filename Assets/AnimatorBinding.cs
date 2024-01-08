@@ -6,6 +6,7 @@ public class AnimatorBinding : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private AnimationClip _attackClip;
     [SerializeField] private PlayerMove _playerMove;
+    private Vector2 _lastDirection = Vector2.zero;
 
     private static readonly int GetHit = Animator.StringToHash("GetHit");
     private static readonly int Walking = Animator.StringToHash("Walking");
@@ -20,8 +21,12 @@ public class AnimatorBinding : MonoBehaviour
     private void FixedUpdate()
     {
         if (_playerMove.IsAttacking) return;
-        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(_playerMove.JoystickDirection.x, 0, _playerMove.JoystickDirection.y));
-
+        if (_playerMove.JoystickDirection.x != 0 || _playerMove.JoystickDirection.y != 0)
+        {
+            _lastDirection = new Vector2(_playerMove.JoystickDirection.x, _playerMove.JoystickDirection.y);
+        }
+        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(_lastDirection.x, 0, _lastDirection.y));
+        
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.2f);
     }
     
@@ -37,9 +42,9 @@ public class AnimatorBinding : MonoBehaviour
         StartCoroutine(MovementReEnableDelay());
     }
 
-    private void HealthUpdate(int amount)
+    private void HealthUpdate(int newVal, int oldVal)
     {
-        if (amount < 0)
+        if (newVal - oldVal < 0)
         {
             _animator.SetTrigger(GetHit);
         }
@@ -57,7 +62,7 @@ public class AnimatorBinding : MonoBehaviour
     
     private void OnEnable()
     {
-        PlayerMove.OnHealthUpdate += HealthUpdate;
+        EntityHealth.OnHealthChanged += HealthUpdate;
         PlayerMove.OnStartMove += PlayerStartMove;
         PlayerMove.OnStopMove += PlayerStopMove;
         PlayerMove.OnAttack += StartAttack;
@@ -65,7 +70,7 @@ public class AnimatorBinding : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerMove.OnHealthUpdate -= HealthUpdate;
+        EntityHealth.OnHealthChanged -= HealthUpdate;
         PlayerMove.OnStartMove -= PlayerStartMove;
         PlayerMove.OnStopMove -= PlayerStopMove;
         PlayerMove.OnAttack -= StartAttack;

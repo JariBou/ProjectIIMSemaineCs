@@ -1,14 +1,9 @@
+using UnityEngine;
+
 public class Gold : Item
 {
-    // Start is called before the first frame update
-    private void Start()
+    protected override void Interact(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        
+        other.GetComponentInParent<EntityGold>().AddGold(_amount);
     }
 }

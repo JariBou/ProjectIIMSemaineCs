@@ -1,14 +1,19 @@
+using System;
+using UnityEngine;
+
 public class PowerUp : Item
 {
-    // Start is called before the first frame update
-    private void Start()
+    protected override void Interact(Collider other)
     {
-        
+        EntityHealth entityHealth = other.GetComponentInParent<EntityHealth>();
+        entityHealth.SetMaxHealth(entityHealth.MaxHealth + _amount);
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.CompareTag("Player"))
+        {
+            Interact(other);
+        }
     }
 }

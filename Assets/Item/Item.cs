@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public abstract class Item : MonoBehaviour
 {
+    [SerializeField] protected int _amount; 
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -13,4 +16,15 @@ public class Item : MonoBehaviour
     {
         
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Interact(other);
+        }
+    }
+
+    protected abstract void Interact(Collider other);
+
 }
